@@ -1,8 +1,12 @@
 # 목차
 
-* [functools.cmp_to_key](#sorted---함수의-정렬-기준--functoolscmptokey)
+* [functools.cmp_to_key](#-sorted---함수의-정렬-기준--functoolscmptokey)
+* [파이썬의 삼항연산자](#-tenary-operator)
 
-# sorted() 함수의 정렬 기준: functools.cmp_to_key
+<br/>
+<br/>
+
+# ✅ sorted() 함수의 정렬 기준: functools.cmp_to_key
 
 * 파이썬의 `sorted()`함수에는 3개의 매개변수를 가진다. 반복가능한 객체, key, reverse.
 * 그리고 이 key는 반복가능한 객체를 정렬하는 기준으로 작용한다.
@@ -93,5 +97,104 @@ comparing  813  and  78
 <br/>
 <br/>
 
+# ✅ Tenary Operator
+
+삼항연산자는 파이썬 2.4부터 추가된 기능으로 조건의 참, 거짓에 따라서 판별하는 연산자이다.
+
+## 1. 일반적인 삼항연산자
+
+가장 기본적이면서 한 줄로 코드를 간소화하는 삼항연산자는 다음과 같다.
+
+```python
+# 문법
+value_if_true if conditions else value_if_false
+
+# 적용 사례
+is_nice = True
+state = "nice" if is_nice else "not nice"
+```
+
+## 2. 튜플을 적용한 삼항연산자
+
+또 다른 방법으로는 튜플을 활용한 방법이 있다. 하지만, pythonic하지 않고 어디에 true 또는 false를 두어야 하는지 헷갈리는 방법이기 때문에 잘 사용되지 않는다.
+
+참고로 튜플 대신 리스트가 올 수도 있다.
+
+```python
+#문법
+(if_test_is_false, if_test_is_true)[test]
+
+# 적용 사례
+nice = True
+personality = ("mean", "nice")[nice]
+print("The cat is ", personality)
+# Output: The cat is nice
+```
+
+또한, 튜플 삼항연산자(tupled tenary technique)를 사용할 경우 다음과 같은 오류가 발생하기도 한다.
+
+```python
+condition = True
+print(2 if condition else 1/0)
+#Output is 2
+
+print((1/0, 2)[condition])
+#ZeroDivisionError is raised
+```
+
+`condition = True`이기 때문에 `True`에 해당하는 값만 판별할 것 같지만 실행결과를 보면 `if-else`를 사용한 방법과 달리 튜플 삼항연산자는 zero division error가 발생하는 `False` 조건까지 확인한 것을 볼 수 있다.
+
+튜플 삼항연산자를 사용하는 경우 튜플이 먼저 빌드된 뒤에 각 항목에 대해서 인덱스가 적용되기 때문에 위와 같은 오류가 발생한다. 반면, if-else 삼항연산자를 사용한 경우 if-else 구문의 논리구조에 따라서 실행되기 때문에 **zero division error**가 발생하지 않는다. 
+
+따라서 True와 False 두 가지 경우 중 하나라도 예외를 발생시킬 수 있거나, 두 가지 경우 모두 계산이 복잡한 메서드를 사용한다면 가급적 튜플을 사용하는 방식은 피하는 것이 좋다.
+
+## 3. ShortHand Tenary
+
+일반적인 삼항연산자보다 훨씬 더 축약된 형태의 삼항연산자도 사용할 수 있다.
+
+이 문법은 파이썬 2.5부터 소개되었고 파이썬 2.5 이상부터 모두 사용가능하다.
+
+```python
+# 활용 방법
+
+True or "Some"
+# Output is True
+
+False or "Some"
+# Output is "Some"
+```
+
+활용방법에서도 확인할 수 있듯이 `or`를 기준으로 왼쪽에 오는 값이 True일 경우에는 `True`를 반환하고 False 또는 None일 경우에는 `or`를 기준으로 오른쪽에 있는 값을 출력하게 된다.
+
+구문이 매우 간단한 만큼 빠르게 함수의 출력을 확인해보고 싶을 때 사용하기에 좋다.
+
+```python
+# 적용 사례1
+
+output = None
+msg = output or "No data returned"
+print(msg)
+# Output is "No data returned"
+
+
+# 적용 사례2: 함수의 매개변수로 활용
+
+def my_func(real_name, optional_display=None):
+    optional_display = optional_display or real_name
+    print(optional_display)
+
+my_func("Arthur")
+# Output is "Arthur"
+my_func("Arthur Morgan", "Arthur Callahan")
+# Output is "Arthur Callahan"
+```
+
+위의 `my_func`함수처럼 간단하게 사용자가 자산의 본명과 닉네임을 둘 다 입력했을 때 본명이 아닌 닉네임이 출력되도록 할 때 활용할 수 있다.
+
+
+<br/>
+<br/>
+
 ### Ref.
 * [How does the functools cmp_to_key function works in Python?](https://www.geeksforgeeks.org/how-does-the-functools-cmp_to_key-function-works-in-python/)
+* [Tenary Operators](https://book.pythontips.com/en/latest/ternary_operators.html)
