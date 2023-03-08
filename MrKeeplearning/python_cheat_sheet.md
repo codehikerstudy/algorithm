@@ -1,7 +1,9 @@
 # 목차
 
-* [functools.cmp_to_key](#-sorted---함수의-정렬-기준--functoolscmptokey)
-* [파이썬의 삼항연산자](#-tenary-operator)
+- [sorted() 함수의 정렬 기준: functools.cmp_to_key](#--sorted--------------functoolscmp-to-key)
+- [Tenary Operator](#--tenary-operator)
+- [DFS로 완전탐색 접근 방법](#--dfs------------)
+- [파이썬에서 전역 변수 사용하기: nonlocal, global](#--------------------nonlocal--global)
 
 <br/>
 <br/>
@@ -93,6 +95,9 @@ comparing  813  and  78
 
 * 위의 예시를 든 것처럼 `cmp_to_key()`에서 받는 호출 가능한 객체는 반드시 이름이 mycmp일 필요는 없다.
 * mycmp에서 반환하는 key에 해당하는 1, 0, -1 또한 반드시 반환값이 1, 0, -1일 필요가 없다. 대신, **비교 대상에 해당하는 a, b가 있을 때 a > b 이면 양수를, a < b 이면 음수를, a == b 이면 0을 반환하기만 하면 된다.**
+
+### Ref.
+* [How does the functools cmp_to_key function works in Python?](https://www.geeksforgeeks.org/how-does-the-functools-cmp_to_key-function-works-in-python/)
 
 <br/>
 <br/>
@@ -191,10 +196,100 @@ my_func("Arthur Morgan", "Arthur Callahan")
 
 위의 `my_func`함수처럼 간단하게 사용자가 자산의 본명과 닉네임을 둘 다 입력했을 때 본명이 아닌 닉네임이 출력되도록 할 때 활용할 수 있다.
 
+### Ref.
+* [Tenary Operators](https://book.pythontips.com/en/latest/ternary_operators.html)
 
 <br/>
 <br/>
+
+# ✅ DFS로 완전탐색 접근 방법
+
+* 어떤 문제를 DFS로 완전탐색을 해도 괜찮을지 확인하고 싶다면 시간복잡도를 계산해야 한다.
+* 테스트케이스의 최악의 경우에 몇 번의 연산을 해야 하는지 확인해보고 그것이 5백만 번 미만이라면 완전탐색으로 해결하는 것이 충분히 가능하다고 생각하고 풀이해도 좋다.
+
+> 단계별 접근 TIP
+> 1. 수행동작을 먼저 구현한다. -> 현재 재귀함수에서 내가 무엇을 수행해야 하는지 정확하게 이해하고 정의한다.
+> 2. 재귀함수를 더 이상 call하지 않는 탈출조건을 구현한다.
+> 3. 재귀함수를 자세하게 그려보고 현재 코드에 대해 이해해본다.
 
 ### Ref.
-* [How does the functools cmp_to_key function works in Python?](https://www.geeksforgeeks.org/how-does-the-functools-cmp_to_key-function-works-in-python/)
-* [Tenary Operators](https://book.pythontips.com/en/latest/ternary_operators.html)
+
+* [프로그래머스 타겟넘버 풀이 영상](https://youtu.be/S2JDw9oNNDk)
+
+<br/>
+<br/>
+
+# ✅ 파이썬에서 전역 변수 사용하기: nonlocal, global
+
+현재 위치보다 더 넓은 범위에서 선언된 변수에 대해서 '읽기' 작업이 가능하다.
+
+```python
+n = 0
+def func():
+    print(n)    # Output is 0
+func()
+```
+```python
+def func1():
+    n = 1
+    def func2():
+        print(n)    # Output is 1
+    func2()
+
+func1()
+```
+
+현재 위치보다 더 넓은 범위에서 선언된 변수에 대해서 '수정' 작업은 불가능하다.
+
+```python
+n = 0 
+def func(): 
+	n += 1  # UnboundLocalError: local variable 'n' referenced before assignment
+	print(n) 
+func()
+
+def func1(): 
+  n = 1 
+  def func2(): 
+  	n += 1  # UnboundLocalError: local variable 'n' referenced before assignment 
+  	print(n) 
+  func2() 
+func1()
+```
+
+## 해결책1: global 사용하기
+
+전역변수가 선언되어 있고 함수 내부에서 전역변수를 수정하고 싶다면 `global`을 사용해서 함수 내부에서 전역변수를 사용한다고 명시해주면 된다.
+
+```python
+n = 1 
+def func1(): 
+  def func2(): 
+    global n 
+    n += 1 
+    print(n)    # Output is 2
+  func2() 
+func1()
+```
+
+## 해결책2: nonlocal 사용하기
+
+전역변수가 아니고 현재 scope 내의 지역변수도 아닌 변수를 수정하기 위해서는 `global`이 아닌 `nonlocal`을 사용한다.
+
+```python
+def func1(): 
+  n = 1
+  def func2(): 
+    nonlocal n
+    n += 1
+    print(n)    # Output is 2
+  func2()
+func1()
+```
+
+### Ref.
+
+* [nonlocal, global로 변수의 scope 변경하기](https://juhi.tistory.com/6)
+
+<br/>
+<br/>
