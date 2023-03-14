@@ -20,3 +20,42 @@ def solution(n, computers):
             cnt += 1    # dfs가 실행되었다는 것 자체가 네트워크가 생성되었다는 것을 의미한다.
 
     return cnt
+
+
+'''
+- 해당 풀이는 bfs를 활용한 풀이입니다.
+- 해당 풀이는 인터넷을 참고하여 풀이하였습니다.
+'''
+from collections import deque
+
+def bfs(n, i, computers, visited):
+    
+    queue = deque()
+    queue.append(i) # index i를 queue에 저장.
+
+    # queue가 빌 때까지 반복
+    while queue:
+        current = queue.popleft()
+        
+        for i in range(n):
+            # 방문하지 않은 연결된 컴퓨터
+            if computers[current][i] == 1 and not visited[i]:
+                visited[i] = True   # 방문하였으므로 False -> True로 전환
+                queue.append(i)
+                print(current, queue)
+
+
+def solution2(n, computers):
+
+    cnt = 0
+    visited = [False] * n
+
+    for i in range(n):  # 컴퓨터의 갯수만큼 반복
+        if not visited[i]:  # 방문하지 않았다면
+            bfs(n, i, computers, visited) 
+            cnt += 1
+
+
+    return cnt
+
+print(solution2(3, [[1, 1, 0], [1, 1, 1], [0, 1, 1]]))
