@@ -39,4 +39,34 @@ def solution(numbers, target):
 
     return answer
 
-print(solution([1,1,1], 1))
+'''
+- 해당 풀이는 bfs를 활용한 풀이이며, 인터넷을 참고하여 풀었습니다.
+- 해당 풀이에 대한 상세한 풀이는 사진으로 따로 남겨두었습니다.
+'''
+
+from collections import deque
+
+# bfs(너비 우선 탐색)를 활용한 풀이
+def solution2(numbers, target):
+    answer = 0
+    queue = deque()
+
+    queue.append([numbers[0], 0])
+    queue.append([-1*numbers[0], 0])
+
+    while queue:
+        print(queue)
+        temp, index = queue.popleft()
+        index += 1
+
+        if index < len(numbers):
+            queue.append([temp+numbers[index], index])
+            queue.append([temp-numbers[index], index])
+        else:
+            if temp == target:
+                answer += 1
+
+    return answer
+
+
+print(solution2([1,1,1], 1))
