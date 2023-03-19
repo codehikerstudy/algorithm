@@ -36,6 +36,12 @@ def bfs(n, i, computers, visited):
     # queue가 빌 때까지 반복
     while queue:
         current = queue.popleft()   # 현재 위치한 컴퓨터의 인덱스를 queue에서 뺀다.
+
+    queue.append(i) # index i를 queue에 저장.
+
+    # queue가 빌 때까지 반복
+    while queue:
+        current = queue.popleft()
         
         for i in range(n):
             # 방문하지 않은 연결된 컴퓨터
