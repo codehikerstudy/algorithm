@@ -31,6 +31,12 @@ from collections import deque
 def bfs(n, i, computers, visited):
     
     queue = deque()
+    queue.append(i) # 현재 위치해 있는 컴퓨터의 인덱스를 queue에 저장
+
+    # queue가 빌 때까지 반복
+    while queue:
+        current = queue.popleft()   # 현재 위치한 컴퓨터의 인덱스를 queue에서 뺀다.
+
     queue.append(i) # index i를 queue에 저장.
 
     # queue가 빌 때까지 반복
@@ -41,8 +47,7 @@ def bfs(n, i, computers, visited):
             # 방문하지 않은 연결된 컴퓨터
             if computers[current][i] == 1 and not visited[i]:
                 visited[i] = True   # 방문하였으므로 False -> True로 전환
-                queue.append(i)
-                print(current, queue)
+                queue.append(i)     # 📌 현재의 컴퓨터와 연결된 컴퓨터의 인덱스를 queue에 저장
 
 
 def solution2(n, computers):
@@ -51,10 +56,9 @@ def solution2(n, computers):
     visited = [False] * n
 
     for i in range(n):  # 컴퓨터의 갯수만큼 반복
-        if not visited[i]:  # 방문하지 않았다면
+        if not visited[i]:  # 방문하지 않았다면 현재의 컴퓨터와 연결된 컴퓨터들을 BFS
             bfs(n, i, computers, visited) 
             cnt += 1
-
 
     return cnt
 
