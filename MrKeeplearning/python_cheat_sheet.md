@@ -287,6 +287,35 @@ def func1():
 func1()
 ```
 
+<br/>
+<br/>
+
+# ✅ asterisk(*)의 쓰임
+
+- iterable arguments를 unpacking해준다.
+
+```python
+fruits = ['lemon', 'pear', 'watermelon', 'tomato']
+
+print(fruits[0], fruits[1], fruits[2], fruits[3])
+# lemon pear watermelon tomato
+
+print(*fruits)
+# lemon pear watermelon tomato
+```
+
+- keyword arguments를 unpack할 때: `**`
+
+```python
+date_info = {'year': "2023", 'month': "05", 'day': "20"}
+
+filename = "{year}-{month}-{day}.txt".format(**date_info)
+
+print(filename)
+# '2023-05-20.txt'
+```
+
+
 ### Ref.
 
 * [nonlocal, global로 변수의 scope 변경하기](https://juhi.tistory.com/6)
