@@ -5,7 +5,6 @@ sys.stdin = open("input.txt", "r")
 
 T = 10
 
-
 def is_palindrome(s):
     """
     회문 판별 함수
